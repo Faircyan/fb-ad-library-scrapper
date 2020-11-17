@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <a href="/" class="brand-logo">
+      <img src="{% static 'brand-logo.png'%}">
+    </a>
+    <h1>{{publisherName}}</h1>
+    <input class="btn btn-lg btn-default" id="PublisherId" placeholder="Publisher Id" href="https://devcenter.heroku.com/articles/getting-started-with-python"></input>
+    <a type="button" class="btn btn-lg btn-primary" onclick="SearchFunction()">Search</a>
+    <a type="button" class="btn btn-lg btn-primary" href={% url 'publisher' link='100349355179634' %}>Red Duck</a>
+
+    <p id="demo"></p>
+  </div>
+</div>
+<div class="container" style="text-align: center; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+  <a class="btn btn-lg btn-default" style="font-size: xx-large;background-color:rgb(100, 42, 194); color: white;">Recently Uploaded Creatives</a>
+</div>
+<br>
+
+{% for game in datas.Games %}
+  {% for name in names %}
+    {% if forloop.counter0 == forloop.parentloop.counter0 %}
+      <div class="container" style="text-align: center; margin: 0%; padding:0%; align-items: center;">
+        <a type="button" class="btn btn-lg btn-primary" href={{ game.GameLink }}>{{name}} ({{game.Counter}})</a>
+      </div>
+    {% endif %}
+  {% endfor %}
+  <br>
+  <div class="jumbotron" style= "margin-left:100px ;margin-right: 100px; margin-bottom: 100px;">
+    {% for video in game.Videos %}
+      <div class="container" style="text-align: center; margin-bottom: 0px;">
+        <a type="button" style="text-align:center" class="btn btn-lg btn-primary" href={{ video }}><span class="glyphicon glyphicon-download"></span> Video Link </a>
+      </div>
+      <br><br>
+    {% endfor %}
+  </div>
+
+{% endfor %}
+
+
+<script>
+  function SearchFunction() {
+    var id = document.getElementById("PublisherId").value;
+    var url = "{% url 'publisher' link='$id' %}".replace('$id', id);
+    location.href = url
+  }
+</script>
+
+{% endblock %}
